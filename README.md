@@ -3,6 +3,9 @@
 > 一城烟火，千年蜀韵。  
 > 入蜀境，见成都。
 
+**线上地址：** [https://summer7-f.github.io/web/](https://summer7-f.github.io/web/)  
+**GitHub 仓库：** [https://github.com/Summer7-F/web](https://github.com/Summer7-F/web)
+
 一个以成都为主题、具有现代国风美学的城市文化旅游网站。项目以「1 个首页 + 6 个独立分页面」组织内容，用影像、时间轴、手绘地图、味觉档案与行程生成器，把成都从“景点列表”还原成一本可以漫游的城市画卷。
 
 ## 界面预览
@@ -128,7 +131,7 @@ pnpm-workspace.yaml          # pnpm 11 构建白名单（esbuild）
 
 项目已改成 **GitHub Pages 静态部署** 版本：
 
-- Vite 使用 <code>base: './'</code>，因此不依赖仓库名，放在 <code>username.github.io/repo/</code> 或自定义域名下都能正确加载图片与资源。
+- Vite 使用 <code>base: './'</code>，因此不依赖仓库名，放在 <code>summer7-f.github.io/web/</code> 或自定义域名下都能正确加载图片与资源。
 - Vue Router 改为 **Hash 模式**。页面地址形如 <code>.../#/heritage</code>、<code>.../#/travel?route=one-classic</code>，刷新页面不会出现 404。
 - 已提供 GitHub Actions：<code>.github/workflows/deploy.yml</code>。
 
@@ -138,7 +141,7 @@ pnpm-workspace.yaml          # pnpm 11 构建白名单（esbuild）
 2. 打开仓库 **Settings → Pages**。
 3. 将 **Build and deployment → Source** 设为 **GitHub Actions**。
 4. 推送代码后，Actions 会自动执行 <code>pnpm install</code>、<code>pnpm build</code> 并部署 <code>dist/</code>。
-5. 部署完成后访问 <code>https://&lt;username&gt;.github.io/&lt;repository&gt;/</code>。
+5. 部署完成后访问：<code>https://summer7-f.github.io/web/</code>。
 
 > 不需要在 <code>vite.config.js</code> 里改仓库名；<code>base: './'</code> 已经适配项目子路径。
 
@@ -174,6 +177,7 @@ pnpm build
 
 ## GitHub Pages 说明
 
+- 当前已启用 GitHub Actions 部署，Pages 的 <code>build_type</code> 为 <code>workflow</code>。
 - 使用 Hash 路由后，所有页面都是同一份 <code>index.html</code>，不需要 <code>404.html</code> 或服务器 rewrite。
 - 搜索、景点详情、路线、影像灯箱等深链接使用 query 参数，例如 <code>#/explore?spot=wuhou</code>、<code>#/gallery?photo=bridge</code>。
 - 构建产物在 <code>dist/</code>，由 GitHub Actions 上传为 Pages artifact。
