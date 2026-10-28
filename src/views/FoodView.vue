@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import PageHero from '../components/PageHero.vue'
 import SectionHead from '../components/SectionHead.vue'
@@ -8,6 +8,7 @@ import FoodModal from '../components/FoodModal.vue'
 import { foods, foodCategories } from '../data/site'
 
 const route = useRoute()
+const router = useRouter()
 const activeCategory = ref('全部')
 const selectedFood = ref(null)
 const randomFood = ref(foods[0])
@@ -46,19 +47,17 @@ function openFood(food) {
 
 function closeFood() {
   selectedFood.value = null
-  if (route.hash) window.history.replaceState(window.history.state, '', route.path)
+  if (route.query.dish) {
+    const query = { ...route.query }
+    delete query.dish
+    router.replace({ path: route.path, query: query })
+  }
 }
 
-function applyHash() {
-  if (!route.hash) return
-  const id = route.hash.replace('#', '')
-  const food = foods.find(function (item) { return item.id === id })
-  if (food) {
-    selectedFood.value = food
-    window.setTimeout(function () {
-      if (route.hash) window.history.replaceState(window.history.state, '', route.path)
-    }, 200)
-  }
+function applyDish() {
+  if (!route.query.dish) return
+  const food = foods.find(function (item) { return item.id === route.query.dish })
+  if (food) selectedFood.value = food
 }
 
 watch(activeCategory, function () {
@@ -67,8 +66,8 @@ watch(activeCategory, function () {
   })
 })
 
-watch(function () { return route.hash }, applyHash)
-onMounted(applyHash)
+watch(function () { return route.query.dish }, applyDish)
+onMounted(applyDish)
 </script>
 
 <template>
@@ -78,7 +77,7 @@ onMounted(applyHash)
       title="川味人间"
       en="TASTE OF CHENGDU"
       intro="成都人把日子过成一桌热气腾腾的饭。红汤翻滚，竹签成把，一碗面也能吃出江湖。"
-      image="/images/hotpot-spread.webp"
+      image="images/hotpot-spread.webp"
       image-position="center"
       theme="red"
       :meta="['火锅', '串串', '担担面', '麻婆豆腐']"
@@ -254,7 +253,7 @@ onMounted(applyHash)
 
     <section class="night-food">
       <div class="night-food__bg">
-        <img src="/images/night-market-wide.webp" alt="成都夜市" loading="lazy" />
+        <img :src="'images/night-market-wide.webp'" alt="成都夜市" loading="lazy" />
       </div>
       <div class="night-food__veil"></div>
       <div class="container night-food__inner">

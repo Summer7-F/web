@@ -157,7 +157,7 @@ onMounted(applyQuery)
       title="游蜀指南"
       en="TRAVEL PLANNER"
       intro="把想看的成都，排进日程里。一日看老城，两日读古蜀，三日把山水与烟火都收进去。"
-      image="/images/skyline-tower.webp"
+      image="images/skyline-tower.webp"
       image-position="center"
       theme="ink"
       :meta="['1 日', '2 日', '3 日', '偏好筛选']"
@@ -384,7 +384,7 @@ onMounted(applyQuery)
 
     <section class="travel-outro">
       <div class="travel-outro__bg">
-        <img src="/images/anshun-gold.webp" alt="暮色中的安顺廊桥" loading="lazy" />
+        <img :src="'images/anshun-gold.webp'" alt="暮色中的安顺廊桥" loading="lazy" />
       </div>
       <div class="travel-outro__veil"></div>
       <div class="container travel-outro__inner" v-reveal>

@@ -4,3 +4,4 @@ assets_raw/
 screenshots/
 .DS_Store
 *.local
+.gh-test/

@@ -1,4 +1,4 @@
-# 蜀运 SHU YUN · 成都城市文化旅游网站
+# 蜀运 SHU YUN · 成都城市文化旅游网站（GitHub Pages）
 
 > 一城烟火，千年蜀韵。  
 > 入蜀境，见成都。
@@ -118,7 +118,38 @@ src/
 public/
   images/                    # 已优化的 WebP 影像
   favicon.svg
+  .nojekyll
+.github/
+  workflows/deploy.yml       # GitHub Pages 自动部署
+pnpm-workspace.yaml          # pnpm 11 构建白名单（esbuild）
 ~~~
+
+## 发布到 GitHub Pages
+
+项目已改成 **GitHub Pages 静态部署** 版本：
+
+- Vite 使用 <code>base: './'</code>，因此不依赖仓库名，放在 <code>username.github.io/repo/</code> 或自定义域名下都能正确加载图片与资源。
+- Vue Router 改为 **Hash 模式**。页面地址形如 <code>.../#/heritage</code>、<code>.../#/travel?route=one-classic</code>，刷新页面不会出现 404。
+- 已提供 GitHub Actions：<code>.github/workflows/deploy.yml</code>。
+
+### 首次发布
+
+1. 在 GitHub 新建仓库，将当前目录推送到 <code>main</code> 分支。
+2. 打开仓库 **Settings → Pages**。
+3. 将 **Build and deployment → Source** 设为 **GitHub Actions**。
+4. 推送代码后，Actions 会自动执行 <code>pnpm install</code>、<code>pnpm build</code> 并部署 <code>dist/</code>。
+5. 部署完成后访问 <code>https://&lt;username&gt;.github.io/&lt;repository&gt;/</code>。
+
+> 不需要在 <code>vite.config.js</code> 里改仓库名；<code>base: './'</code> 已经适配项目子路径。
+
+### 手动构建
+
+~~~bash
+pnpm install
+pnpm build
+~~~
+
+将 <code>dist/</code> 发布到任意静态托管即可。Hash 路由不需要额外的 404 回退配置。
 
 ## 内容维护
 
@@ -141,12 +172,9 @@ public/
 - 演示图片来自公开网络（含 Unsplash 等来源），仅用于本项目视觉展示与文化氛围表达；正式商业上线前，请逐张确认授权，或替换为委托拍摄/购买授权的成都实景影像。
 - 页面中的时间、票价、交通与开放信息为旅行灵感参考，出发前请以景区官方发布为准。
 
-## 部署提示
+## GitHub Pages 说明
 
-站点使用 Vue Router 的 History 模式。部署到静态托管时，需要把未知路径回退到 <code>index.html</code>：
-
-- Netlify：已提供 <code>public/_redirects</code>
-- Vercel：已提供 <code>vercel.json</code>
-- Nginx：<code>try_files $uri $uri/ /index.html;</code>
-
-构建产物在 <code>dist/</code>。
+- 使用 Hash 路由后，所有页面都是同一份 <code>index.html</code>，不需要 <code>404.html</code> 或服务器 rewrite。
+- 搜索、景点详情、路线、影像灯箱等深链接使用 query 参数，例如 <code>#/explore?spot=wuhou</code>、<code>#/gallery?photo=bridge</code>。
+- 构建产物在 <code>dist/</code>，由 GitHub Actions 上传为 Pages artifact。
+- 如果之后绑定自定义域名，仍可直接使用 Hash 页面地址。

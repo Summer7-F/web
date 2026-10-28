@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PageHero from '../components/PageHero.vue'
 import SectionHead from '../components/SectionHead.vue'
@@ -21,9 +21,16 @@ function applyQuery() {
   if (era && timelineEras.some(function (item) { return item.id === era })) {
     activeEraId.value = era
   }
+  const site = route.query.site
+  if (site && heritageSites.some(function (item) { return item.id === site })) {
+    nextTick(function () {
+      const el = document.getElementById(site)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
 }
 
-watch(function () { return route.query.era }, applyQuery)
+watch(function () { return [route.query.era, route.query.site] }, applyQuery)
 onMounted(applyQuery)
 </script>
 
@@ -34,7 +41,7 @@ onMounted(applyQuery)
       title="古蜀文脉"
       en="HISTORY & HERITAGE"
       intro="从金沙的神鸟，到三国的红墙；从杜甫的草堂，到川剧的一瞬千面。成都有三千年，不止一面。"
-      image="/images/jinsha-mask.webp"
+      image="images/jinsha-mask.webp"
       image-position="center"
       theme="ink"
       :meta="['金沙遗址', '武侯祠', '川剧变脸']"

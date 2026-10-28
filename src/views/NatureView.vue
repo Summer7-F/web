@@ -1,10 +1,13 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import PageHero from '../components/PageHero.vue'
 import SectionHead from '../components/SectionHead.vue'
 import AttractionModal from '../components/AttractionModal.vue'
 import { natureFacts, natureSpots, seasons, getSpot } from '../data/site'
 
+const route = useRoute()
+const router = useRouter()
 const flipped = ref([])
 const activeSeason = ref(seasons[0].id)
 const selectedSpot = ref(null)
@@ -33,7 +36,21 @@ function openSpot(item) {
 
 function closeSpot() {
   selectedSpot.value = null
+  if (route.query.spot) {
+    const query = { ...route.query }
+    delete query.spot
+    router.replace({ path: route.path, query: query })
+  }
 }
+
+function applyQuery() {
+  if (!route.query.spot) return
+  const spot = getSpot(route.query.spot)
+  if (spot) selectedSpot.value = spot
+}
+
+watch(function () { return route.query.spot }, applyQuery)
+onMounted(applyQuery)
 </script>
 
 <template>
@@ -43,7 +60,7 @@ function closeSpot() {
       title="熊猫与自然"
       en="PANDAS & NATURE"
       intro="在成都，自然不是远方。它是一只熊猫手里的竹子，是城市尽头的一条绿道，也是西边窗框里的一抹雪山。"
-      image="/images/panda-group.webp"
+      image="images/panda-group.webp"
       image-position="center"
       theme="green"
       :meta="['大熊猫', '青城山', '天府绿道']"
@@ -53,7 +70,7 @@ function closeSpot() {
       <div class="container">
         <div class="nature-intro__grid">
           <div class="nature-intro__media" v-reveal>
-            <img src="/images/panda-close.webp" alt="竹林里的大熊猫" loading="lazy" />
+            <img :src="'images/panda-close.webp'" alt="竹林里的大熊猫" loading="lazy" />
             <div class="nature-intro__caption">
               <span>01 · 大熊猫</span>
               <p>Ailuropoda melanoleuca</p>
@@ -177,10 +194,10 @@ function closeSpot() {
         <div class="greenway-feature__grid">
           <div class="greenway-feature__images" v-reveal>
             <div class="greenway-feature__main">
-              <img src="/images/greenway-aerial.webp" alt="天府绿道环城生态公园" loading="lazy" />
+              <img :src="'images/greenway-aerial.webp'" alt="天府绿道环城生态公园" loading="lazy" />
             </div>
             <div class="greenway-feature__small">
-              <img src="/images/greenway-bridge.webp" alt="绿道上的桥" loading="lazy" />
+              <img :src="'images/greenway-bridge.webp'" alt="绿道上的桥" loading="lazy" />
             </div>
             <span class="greenway-feature__seal">绿</span>
           </div>
@@ -251,7 +268,7 @@ function closeSpot() {
 
     <section class="nature-outro">
       <div class="nature-outro__bg">
-        <img src="/images/qingcheng-trail.webp" alt="青城山山路" loading="lazy" />
+        <img :src="'images/qingcheng-trail.webp'" alt="青城山山路" loading="lazy" />
       </div>
       <div class="nature-outro__veil"></div>
       <div class="container nature-outro__inner" v-reveal>

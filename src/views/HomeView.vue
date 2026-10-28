@@ -27,13 +27,13 @@ const featuredRoutes = computed(function () {
 })
 
 const stripImages = [
-  { src: '/images/jinli-lanterns.webp', alt: '锦里灯笼' },
-  { src: '/images/peoples-park-2.webp', alt: '人民公园茶客' },
-  { src: '/images/panda-close.webp', alt: '大熊猫' },
-  { src: '/images/night-market.webp', alt: '建设路夜市' },
-  { src: '/images/opera-mask.webp', alt: '川剧变脸' },
-  { src: '/images/ginkgo-avenue.webp', alt: '成都银杏' },
-  { src: '/images/eastmemory-1.webp', alt: '东郊记忆' }
+  { src: 'images/jinli-lanterns.webp', alt: '锦里灯笼' },
+  { src: 'images/peoples-park-2.webp', alt: '人民公园茶客' },
+  { src: 'images/panda-close.webp', alt: '大熊猫' },
+  { src: 'images/night-market.webp', alt: '建设路夜市' },
+  { src: 'images/opera-mask.webp', alt: '川剧变脸' },
+  { src: 'images/ginkgo-avenue.webp', alt: '成都银杏' },
+  { src: 'images/eastmemory-1.webp', alt: '东郊记忆' }
 ]
 
 function scrollToIntro() {
@@ -85,7 +85,7 @@ onBeforeUnmount(function () {
     <section ref="heroRef" class="home-hero">
       <div class="home-hero__media">
         <img
-          src="/images/hero-bridge.webp"
+          :src="'images/hero-bridge.webp'"
           alt="蓝调时刻的成都安顺廊桥与锦江倒影"
           fetchpriority="high"
         />
@@ -352,7 +352,7 @@ onBeforeUnmount(function () {
 
     <section class="home-outro">
       <div class="home-outro__bg">
-        <img src="/images/anshun-gold.webp" alt="暮色中的安顺廊桥" loading="lazy" />
+        <img :src="'images/anshun-gold.webp'" alt="暮色中的安顺廊桥" loading="lazy" />
       </div>
       <div class="home-outro__veil" aria-hidden="true"></div>
       <div class="container home-outro__inner">

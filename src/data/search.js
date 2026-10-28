@@ -74,7 +74,7 @@ const items = [
       title: item.name,
       en: item.en,
       summary: item.summary,
-      path: item.group === 'city' ? '/explore?spot=' + item.id : item.group === 'nature' ? '/nature#' + item.id : '/heritage#' + item.id,
+      path: item.group === 'city' ? '/explore?spot=' + item.id : item.group === 'nature' ? '/nature?spot=' + item.id : '/heritage?site=' + item.id,
       keywords: [item.category, item.tags.join(' '), item.transport, item.story].join(' ')
     }
   }),
@@ -84,7 +84,7 @@ const items = [
       title: item.name,
       en: item.en,
       summary: item.tagline,
-      path: '/food#' + item.id,
+      path: '/food?dish=' + item.id,
       keywords: [item.category, item.tags.join(' '), item.story].join(' ')
     }
   }),

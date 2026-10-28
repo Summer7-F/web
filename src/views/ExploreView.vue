@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import PageHero from '../components/PageHero.vue'
 import SectionHead from '../components/SectionHead.vue'
@@ -9,6 +9,7 @@ import AttractionModal from '../components/AttractionModal.vue'
 import { attractions, cityWalks, getSpot } from '../data/site'
 
 const route = useRoute()
+const router = useRouter()
 const categories = ['全部', '历史街巷', '现代都市', '休闲生活']
 const activeCategory = ref('全部')
 const selectedSpot = ref(null)
@@ -47,7 +48,9 @@ function openSpot(spot) {
 function closeSpot() {
   selectedSpot.value = null
   if (route.query.spot) {
-    window.history.replaceState(window.history.state, '', route.path)
+    const query = { ...route.query }
+    delete query.spot
+    router.replace({ path: route.path, query: query })
   }
 }
 
@@ -82,7 +85,7 @@ onMounted(function () {
       title="锦城漫游"
       en="EXPLORE CHENGDU"
       intro="成都适合用脚步打开。拐进一条巷子，穿过一座公园，在河桥边等灯亮起来。城市会把它的性格，慢慢给你看。"
-      image="/images/jinli-lanterns.webp"
+      image="images/jinli-lanterns.webp"
       image-position="center"
       theme="ink"
       :meta="['历史街巷', '现代都市', '休闲生活']"
@@ -254,7 +257,7 @@ onMounted(function () {
 
     <section class="explore-cta">
       <div class="explore-cta__bg">
-        <img src="/images/night-market.webp" alt="成都夜市" loading="lazy" />
+        <img :src="'images/night-market.webp'" alt="成都夜市" loading="lazy" />
       </div>
       <div class="explore-cta__veil"></div>
       <div class="container explore-cta__inner" v-reveal>

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import PageHero from '../components/PageHero.vue'
 import SectionHead from '../components/SectionHead.vue'
@@ -8,6 +8,7 @@ import GalleryLightbox from '../components/GalleryLightbox.vue'
 import { galleryItems, galleryCategories } from '../data/site'
 
 const route = useRoute()
+const router = useRouter()
 const activeCategory = ref('全部')
 const lightboxOpen = ref(false)
 const activeIndex = ref(0)
@@ -31,7 +32,9 @@ function openLightbox(item) {
 function closeLightbox() {
   lightboxOpen.value = false
   if (route.query.photo) {
-    window.history.replaceState(window.history.state, '', route.path)
+    const query = { ...route.query }
+    delete query.photo
+    router.replace({ path: route.path, query: query })
   }
 }
 
@@ -64,7 +67,7 @@ onMounted(applyQuery)
       title="蜀城光影"
       en="GALLERY & STORIES"
       intro="城市会忘记，镜头会记得。夜景、古建、市井、人物与自然，二十三个瞬间，组成我们看见的成都。"
-      image="/images/skyline-tower.webp"
+      image="images/skyline-tower.webp"
       image-position="center"
       theme="ink"
       :meta="['夜景', '古建', '市井', '人物', '自然']"
@@ -145,7 +148,7 @@ onMounted(applyQuery)
       <div class="container">
         <div class="gallery-story__grid">
           <div class="gallery-story__media" v-reveal>
-            <img src="/images/jinli-courtyard.webp" alt="锦里院落" loading="lazy" />
+            <img :src="'images/jinli-courtyard.webp'" alt="锦里院落" loading="lazy" />
             <span class="gallery-story__stamp">光影<br />札记</span>
           </div>
           <div class="gallery-story__copy" v-reveal="{ delay: 0.1 }">
